@@ -1,0 +1,6 @@
+# OBS Python Installer
+A simple script to install Python 3.6 and Pip for use by OBS to run python scripts
+## Why
+OBS Studio supports access to most of it's C plugin api via Python, but only via the now unsupported Python 3.6, and requires that you manually locate the python folder before you can start using Python scripts. This makes it a hassle to use python scripts with obs, since you'd have to locate the download for the older version of python, install it (possibly screwing up an existing install of a newer version of python needed for other software in the system), and then locate the install folder in the OBS scripting settings. This script aims to make that a little easier by downloading the embedded version of python 3.6, adding the pip package manager to allow scripts to install dependancies, and providing the path to the dedicated python install so you can paste it into the location bar, simplifying the setup process.
+## Usage
+Just [download](https://github.com/sugoidogo/obs-python-installer/releases/latest) and run.
