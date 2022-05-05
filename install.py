@@ -4,6 +4,8 @@ from io import BytesIO
 from urllib.request import urlopen
 from os import makedirs,chdir
 from subprocess import run
+from json import load, dump
+from os import listdir
 
 python_url='https://www.python.org/ftp/python/3.6.8/python-3.6.8-embed-amd64.zip'
 install_path=environ['appdata']+'/obs-studio/python/'
@@ -12,6 +14,7 @@ pth_string='python36.zip\n.\nimport site\n./Lib/site-packages/'
 pip_url='https://bootstrap.pypa.io/pip/3.6/get-pip.py'
 pip_path='get-pip.py'
 pip_command='python.exe get-pip.py --no-warn-script-location'
+scenes_path=environ['appdata']+'/obs-studio/basic/scenes/'
 
 print('downloading python...')
 zip=ZipFile(BytesIO(urlopen(python_url).read()))
@@ -36,8 +39,24 @@ get_pip.write(urlopen(pip_url).read())
 get_pip.close()
 print('running pip installer...')
 run(install_path+pip_command)
+print('setting python path in all scene collections...')
+for filename in listdir(scenes_path):
+    if(filename.endswith('.json')):
+        file=open(scenes_path+filename,'r+')
+        json=load(file)
+        if(len(json['modules']['scripts-tool'])==0):
+            json['modules']['scripts-tool'].append({
+                'path':install_path
+            })
+        else:
+            json['modules']['scripts-tool'][0]['path']=install_path
+        file.seek(0)
+        file.truncate()
+        dump(json, file)
+        file.close
+        print('updated '+filename)
 print('')
 print('Python 3.6.8 embedded plus pip has been installed')
-print('Please open OBS > Tools > Scripts > Python Settings > Browse')
-print('and paste the following path into the location bar and click Select Path')
-input(install_path)
+print('All existing scene collections have been updated')
+print('To add python to new scenes, simply close obs and run this installer again')
+input('You may now close this window')
