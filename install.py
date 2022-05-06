@@ -41,19 +41,23 @@ run(install_path+pip_command)
 print('setting python path in all scene collections...')
 for filename in listdir(scenes_path):
     if(filename.endswith('.json')):
-        file=open(scenes_path+filename,'r+')
-        json=load(file)
-        if(len(json['modules']['scripts-tool'])==0):
-            json['modules']['scripts-tool'].append({
-                'path':install_path
-            })
-        else:
-            json['modules']['scripts-tool'][0]['path']=install_path
-        file.seek(0)
-        file.truncate()
-        dump(json, file)
-        file.close
-        print('updated '+filename)
+        try:
+            file=open(scenes_path+filename,'r+')
+            json=load(file)
+            if(len(json['modules']['scripts-tool'])==0):
+                json['modules']['scripts-tool'].append({
+                    'path':install_path
+                })
+            else:
+                json['modules']['scripts-tool'][0]['path']=install_path
+            file.seek(0)
+            file.truncate()
+            dump(json, file)
+            file.close
+            print('updated '+filename)
+        except:
+            from traceback import print_exc
+            print_exc()
 print('')
 print('Python 3.6.8 embedded plus pip has been installed')
 print('All existing scene collections have been updated')
