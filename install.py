@@ -23,11 +23,15 @@ makedirs(install_path,exist_ok=True)
 print('extracting python...')
 chdir(install_path)
 for filename in zip.namelist():
-    ofile=open(filename,'wb')
-    ifile=zip.open(filename)
-    ofile.write(ifile.read())
-    ofile.close()
-    ifile.close()
+    try:
+        ofile=open(filename,'wb')
+        ifile=zip.open(filename)
+        ofile.write(ifile.read())
+        ofile.close()
+        ifile.close()
+    except:
+        from traceback import print_exc
+        print_exc()
 print('enabling site-packages...')
 pth=open(pth_path,'w')
 pth.write(pth_string)
