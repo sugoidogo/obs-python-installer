@@ -58,6 +58,7 @@ for filename in listdir(scenes_path):
         except:
             from traceback import print_exc
             print_exc()
+            print('update failed on '+filename)
 print('')
 print('Python 3.6.8 embedded plus pip has been installed')
 print('All existing scene collections have been updated')
