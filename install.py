@@ -42,7 +42,7 @@ print('setting python path in all scene collections...')
 for filename in listdir(scenes_path):
     if(filename.endswith('.json')):
         try:
-            file=open(scenes_path+filename,'r+')
+            file=open(scenes_path+filename,'r+',encoding='utf-8')
             json=load(file)
             if(len(json['modules']['scripts-tool'])==0):
                 json['modules']['scripts-tool'].append({
