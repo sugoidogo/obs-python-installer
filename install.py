@@ -14,7 +14,7 @@ pth_string='python36.zip\n.\nimport site\n./Lib/site-packages/'
 pip_url='https://bootstrap.pypa.io/pip/3.6/get-pip.py'
 pip_path='get-pip.py'
 pip_command='python.exe get-pip.py --no-warn-script-location'
-scenes_path=environ['appdata']+'/obs-studio/basic/scenes/'
+global_ini_path=environ['appdata']+'/obs-studio/global.ini'
 
 print('downloading python...')
 zip=ZipFile(BytesIO(urlopen(python_url).read()))
@@ -38,29 +38,15 @@ get_pip.write(urlopen(pip_url).read())
 get_pip.close()
 print('running pip installer...')
 run(install_path+pip_command)
-print('setting python path in all scene collections...')
-for filename in listdir(scenes_path):
-    if(filename.endswith('.json')):
-        try:
-            file=open(scenes_path+filename,'r+',encoding='utf-8')
-            json=load(file)
-            if(len(json['modules']['scripts-tool'])==0):
-                json['modules']['scripts-tool'].append({
-                    'path':install_path
-                })
-            else:
-                json['modules']['scripts-tool'][0]['path']=install_path
-            file.seek(0)
-            file.truncate()
-            dump(json, file)
-            file.close
-            print('updated '+filename)
-        except:
-            from traceback import print_exc
-            print_exc()
-            print('update failed on '+filename)
+print('setting python path in OBS...')
+global_ini_file=open(global_ini_path,'a')
+global_ini_file.writelines([
+    '\n',
+    '[Python]\n'
+    'Path64bit='+install_path+'\n'
+])
+global_ini_file.close()
 print('')
 print('Python 3.6.8 embedded plus pip has been installed')
-print('All existing scene collections have been updated')
-print('To add python to new scenes, simply close obs and run this installer again')
+print('Your OBS Settings have been updated')
 input('You may now close this window')
