@@ -16,6 +16,7 @@ pip_path='get-pip.py'
 pip_command='python.exe get-pip.py --no-warn-script-location'
 global_ini_path=environ['appdata']+'/obs-studio/global.ini'
 
+input('Make sure OBS is closed, then press Enter to continue')
 print('downloading python...')
 zip=ZipFile(BytesIO(urlopen(python_url).read()))
 print('creating install folder...')
