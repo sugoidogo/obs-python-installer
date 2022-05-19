@@ -38,6 +38,7 @@ def ensureInstallPath()->str:
 def main():
     input('Make sure OBS is closed, then press enter to continue.')
     install_path=ensureInstallPath()
+    print('Using '+install_path)
     print('Updating OBS config')
     global_ini_file=open(global_ini_path,'a')
     global_ini_file.writelines([
