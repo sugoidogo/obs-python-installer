@@ -40,13 +40,22 @@ def main():
     install_path=ensureInstallPath()
     print('Using '+install_path)
     print('Updating OBS config')
-    global_ini_file=open(global_ini_path,'a')
-    global_ini_file.writelines([
-        '\n',
-        '[Python]\n'
-        'Path64bit='+install_path+'\n'
-    ])
-    global_ini_file.close()
+    from configparser import ConfigParser
+    config=ConfigParser(strict=False)
+    global_ini=open(global_ini_path,'r+',encoding='utf-8')
+    config.read_string(global_ini.read().replace('\ufeff',''))
+    if is64:
+        keyname='path64bit'
+    else:
+        keyname='path32bit'
+    if config.has_section('Python'):
+        config['Python'][keyname]=install_path
+    else:
+        config['Python']={keyname:install_path}
+    global_ini.seek(0)
+    global_ini.truncate()
+    config.write(global_ini,space_around_delimiters=False)
+    global_ini.close()
     input('\nOBS can now use python 3.6 scripts\nYou can close this window\nor press enter to exit')
 
 if __name__ == '__main__':
